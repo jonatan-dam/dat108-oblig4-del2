@@ -11,6 +11,7 @@
     <title>Deltagerliste</title>
 </head>
 <body>
+    <p>Du er innlogget som <c:out value="${username}"/></p><br>
     <h2>Deltagerliste</h2>
     <table>
         <tr>

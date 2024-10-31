@@ -14,17 +14,13 @@ CREATE TABLE deltager
     fornavn VARCHAR(20) NOT NULL,
     etternavn VARCHAR(20) NOT NULL,
     kjonn VARCHAR(6) CHECK (kjonn='mann' OR kjonn='kvinne'),
-    passord VARCHAR(100) NOT NULL
+    passordhash VARCHAR(100) NOT NULL,
+    salt VARCHAR(100) NOT NULL
 );
 
 -- 
 
 
 
-INSERT INTO
-  deltager(mobil, fornavn, etternavn, kjonn, passord)
-VALUES
-    ('41768349', 'Per', 'Viskeler', 'mann', '10asjdkasdjk289!!!2'),
-    ('12345678', 'Anne', 'Nordmann', 'kvinne', '298jkasdjASDOLASD!"349');
-  
+
     

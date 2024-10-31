@@ -7,17 +7,13 @@
 <head>
     <link href="css/simple.css" rel="stylesheet" type="text/css" />
     <meta charset="UTF-8">
-   <script src="js/klientsidevalidering.js" defer></script>
+   
     <title>Påmelding</title>
 </head>
 
 <body>
     <h2>Logg inn</h2>
-    <p style="color:red;">
-            <c:forEach var="feilmelding" items="${SAfeilmeldinger}">
-                ${feilmelding}<br>
-            </c:forEach>
-         </p>
+    <p style="color:red;">${redirectMessage}</p>
             
     
     
@@ -25,7 +21,7 @@
             <label for="mobil">Mobil:</label>
             <input type="number" name="mobil" id="mobil"><br>
             <label for="passord">Passord:</label>
-            <input type="password" name="password" id="password"><br>
+            <input type="password" name="passord" id="passord"><br>
             <input type="submit" value="Logg inn">
         </form>   
    

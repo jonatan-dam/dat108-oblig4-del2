@@ -7,20 +7,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import no.hvl.dat108.model.Deltager;
 import no.hvl.dat108.repository.DeltagerRepo;
+import no.hvl.dat108.service.PassordService;
 
 @Controller
 public class PaameldingController {
+	
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		binder.setDisallowedFields("passord");
+	}
 
 	@Autowired
 	private DeltagerRepo deltagerRepo;
+	
+	@Autowired
+	private PassordService passordService;
 	
 	@GetMapping("/paamelding")
 	public String paamelding() {
@@ -28,23 +40,7 @@ public class PaameldingController {
 	}
 	
 	
-	@GetMapping("/deltagerliste")
-	public String deltagerliste(Model model) {
-		List<Deltager> alleDeltagere = deltagerRepo.findAll();
-		
-		// Legger inn sortering på fornavn først, etterfølgt av sortering på etternavn
-		Comparator<Deltager> comp = Comparator
-			.comparing(Deltager::getFornavn)
-			.thenComparing(Deltager::getEtternavn);
-				
-		List<Deltager> sortertDeltagere = alleDeltagere.stream()
-			.sorted(comp)
-			.toList();
-				
-		model.addAttribute("deltagere", sortertDeltagere);
-		
-		return "deltagerliste";
-	}
+	
 	
 	
 	@GetMapping("/kvittering")
@@ -53,7 +49,7 @@ public class PaameldingController {
 	}
 	
 	@PostMapping(value ="/sjekkDeltager")
-	public String sjekkDeltager(@Valid @ModelAttribute("deltager") Deltager deltager, BindingResult bindingResult, HttpSession session) {
+	public String sjekkDeltager(@Valid @ModelAttribute("deltager") Deltager deltager, @RequestParam String passord, BindingResult bindingResult, HttpSession session) {
 		
 		// Validerer deltager-objektet
 		if(bindingResult.hasErrors()) { 
@@ -71,6 +67,11 @@ public class PaameldingController {
 			return "redirect:paamelding";
 		}
 		
+		deltager.setSalt(passordService.genererTilfeldigSalt());
+		
+		deltager.setPassordhash(passordService.hashMedSalt(passord, deltager.getSalt()));
+		
+	
 		deltagerRepo.save(deltager);
 		session.setAttribute("SAdeltager", deltager);
 		

@@ -5,6 +5,8 @@ import jakarta.servlet.http.HttpSession;
 
 public class LoginUtil {
 	
+	
+	
 	/**
 	 * En util for å logge ut brukeren. Dersom det er en aktiv session, så invalideres denne.
 	 * @param session
@@ -19,9 +21,12 @@ public class LoginUtil {
 	
 	public static void loggInnBruker(HttpServletRequest request, String username, String password) {
 		
-		loggUtBruker(request.getSession()); // Dersom bruker allerede er innlogget, logger bruker ut før hen logges inn igjen
+		loggUtBruker(request.getSession()); // Dersom bruker allerede er innlogget, logges bruker ut før hen logges inn igjen
+		
 		HttpSession sesjon = request.getSession();
 		sesjon.setAttribute("username", username); // Lagrer brukernavnet
+		
+		
 		sesjon.setMaxInactiveInterval(120); // Bruker logges ut etter 2 minutter med inaktivitet
 	}
 	

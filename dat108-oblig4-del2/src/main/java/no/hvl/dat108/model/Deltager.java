@@ -16,9 +16,7 @@ public class Deltager {
 	private String mobil;
 	
 	
-	@Pattern(regexp="^(?=.*[0-9])(?=.*[\\W_])[A-Za-z0-9\\W_]{7,}$", message="Passord må ha en minimumslengde på 7. Man må også ha minst 1 tall og minst 1 spesialtegn.")
-	@NotNull(message="Passord er obligatorisk")
-	private String passord;
+	
 	
 	
 	@Pattern(regexp="^[A-ZÆØÅ][a-zA-ZæøåÆØÅ\\- ]{2,19}$", message="Fornavn skal være 2-20 tegn og kan inneholde bokstaver (inkl. æøåÆØÅ), bindestrek "
@@ -36,6 +34,13 @@ public class Deltager {
 	@Pattern(regexp = "^(?i)(mann|kvinne)$", message = "Kjønn må være enten 'mann' eller 'kvinne'")
 	@NotNull(message = "Kjønn er obligatorisk")
 	private String kjonn;
+	
+	private String salt;
+	
+	
+	//@Pattern(regexp="^(?=.*[0-9])(?=.*[\\W_])[A-Za-z0-9\\W_]{7,}$", message="Passord må ha en minimumslengde på 7. Man må også ha minst 1 tall og minst 1 spesialtegn.")
+	//@NotNull(message="Passord er obligatorisk")
+	private String passordhash;
 
 
 	public String getMobil() {
@@ -80,21 +85,34 @@ public class Deltager {
 	
 
 
-	public String getPassord() {
-		return passord;
+	public String getPassordhash() {
+		return passordhash;
 	}
 
 
-	public void setPassord(String passord) {
-		this.passord = passord;
+	public void setPassordhash(String passordhash) {
+		this.passordhash = passordhash;
+	}
+
+
+	public String getSalt() {
+		return salt;
+	}
+
+
+	public void setSalt(String salt) {
+		this.salt = salt;
 	}
 
 
 	@Override
 	public String toString() {
 		return "Deltager [mobil=" + mobil + ", fornavn=" + fornavn + ", etternavn=" + etternavn + ", kjonn=" + kjonn
-				+ "]";
+				+ ", salt=" + salt + ", passordHash=" + passordhash + "]";
 	}
+
+
+	
 	
 	
 	
