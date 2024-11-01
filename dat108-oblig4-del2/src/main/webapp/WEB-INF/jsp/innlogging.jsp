@@ -8,7 +8,7 @@
     <link href="css/simple.css" rel="stylesheet" type="text/css" />
     <meta charset="UTF-8">
    
-    <title>Påmelding</title>
+    <title>Logg inn</title>
 </head>
 
 <body>

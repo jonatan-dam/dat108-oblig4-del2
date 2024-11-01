@@ -20,4 +20,12 @@ public class DeltagerService {
 	public boolean erMobilRegistrert(String mobil) {
 		return deltagerRepo.existsByMobil(mobil);
 	}
+	
+	public Deltager finnVedMobil(String mobil) {
+		return deltagerRepo.findByMobil(mobil);
+	}
+	
+	public List<Deltager> finnAlle(){
+		return deltagerRepo.findAll();
+	}
 }

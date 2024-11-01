@@ -12,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.servlet.http.HttpSession;
 import no.hvl.dat108.model.Deltager;
 import no.hvl.dat108.repository.DeltagerRepo;
+import no.hvl.dat108.service.DeltagerService;
 import no.hvl.dat108.service.PassordService;
 import no.hvl.dat108.util.LoginUtil;
 
@@ -24,6 +25,9 @@ public class DeltagerListeController {
 	@Autowired
 	private PassordService passordService;
 	
+	@Autowired
+	private DeltagerService deltagerService;
+	
 	@GetMapping("/deltagerliste")
 	public String deltagerliste(Model model, HttpSession session, RedirectAttributes ra) {
 		
@@ -32,7 +36,11 @@ public class DeltagerListeController {
 			return "redirect:innlogging";
 		}
 		
-		List<Deltager> alleDeltagere = deltagerRepo.findAll();
+		String mobil = (String) session.getAttribute("username");
+		session.setAttribute("fornavn", deltagerService.finnVedMobil(mobil).getFornavn());
+		session.setAttribute("etternavn", deltagerService.finnVedMobil(mobil).getEtternavn());
+		
+		List<Deltager> alleDeltagere = deltagerService.finnAlle();
 		
 		// Legger inn sortering på fornavn først, etterfølgt av sortering på etternavn
 		Comparator<Deltager> comp = Comparator

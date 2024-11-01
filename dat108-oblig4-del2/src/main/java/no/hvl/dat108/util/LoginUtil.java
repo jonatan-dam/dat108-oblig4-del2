@@ -3,6 +3,7 @@ package no.hvl.dat108.util;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
+
 public class LoginUtil {
 	
 	
@@ -25,6 +26,7 @@ public class LoginUtil {
 		
 		HttpSession sesjon = request.getSession();
 		sesjon.setAttribute("username", username); // Lagrer brukernavnet
+		
 		
 		
 		sesjon.setMaxInactiveInterval(120); // Bruker logges ut etter 2 minutter med inaktivitet
