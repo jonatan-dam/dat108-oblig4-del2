@@ -77,8 +77,8 @@ function validateMobil(mobil){
 function validatePassord(passord){
     let valid = true;
     
-    if(/^(?=.*[0-9])(?=.*[\W_])[A-Za-z0-9\W_]{7,}$/.test(passord.value) === false){
-        passord.setCustomValidity("Passord må ha en minimumslengde på 7. Man må også ha minst 1 tall og minst 1 spesialtegn.")
+    if(/^.{7,}$/.test(passord.value) === false){
+        passord.setCustomValidity("Passord må ha en minimumslengde på 7.")
         valid = false;
     } else {
         passord.setCustomValidity("");

@@ -38,8 +38,6 @@ public class Deltager {
 	private String salt;
 	
 	
-	//@Pattern(regexp="^(?=.*[0-9])(?=.*[\\W_])[A-Za-z0-9\\W_]{7,}$", message="Passord må ha en minimumslengde på 7. Man må også ha minst 1 tall og minst 1 spesialtegn.")
-	//@NotNull(message="Passord er obligatorisk")
 	private String passordhash;
 
 

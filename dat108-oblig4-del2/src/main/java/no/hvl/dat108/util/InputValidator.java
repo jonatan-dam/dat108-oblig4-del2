@@ -6,7 +6,11 @@ public class InputValidator {
 		return mobil != null && mobil.matches("^[0-9]{8}$");
 	}
 	
-	public static boolean isValidPassword(String passordHash) {
-		return false;
+	public static boolean isValidPassword(String passordhash) {
+		return passordhash != null && passordhash.matches("^.{7,}$");
+	}
+	
+	public static boolean isValidPasswordRepeated(String passordhash, String passordRepetert) {
+		return passordRepetert.equals(passordhash);
 	}
 }
