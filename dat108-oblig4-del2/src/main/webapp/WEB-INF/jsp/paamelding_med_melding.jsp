@@ -14,7 +14,7 @@
 <body>
     <h2>Påmelding</h2>
     <p style="color:red;">
-            <c:forEach var="feilmelding" items="${SAfeilmeldinger}">
+            <c:forEach var="feilmelding" items="${RAfeilmeldinger}">
                 ${feilmelding}<br>
             </c:forEach>
          </p>

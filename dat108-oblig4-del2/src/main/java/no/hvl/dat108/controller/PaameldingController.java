@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import no.hvl.dat108.model.Deltager;
 import no.hvl.dat108.repository.DeltagerRepo;
@@ -75,7 +75,7 @@ public class PaameldingController {
 	 */
 	@PostMapping(value ="/sjekkDeltager")
 	public String sjekkDeltager(@Valid @ModelAttribute("deltager") Deltager deltager, BindingResult bindingResult, @RequestParam String passord,
-			@RequestParam String passordRepetert, HttpSession session, HttpServletRequest request) {
+			@RequestParam String passordRepetert, RedirectAttributes ra, HttpServletRequest request) {
 		
 		
 		// Validerer deltager-objektet
@@ -84,34 +84,38 @@ public class PaameldingController {
 					.map(e -> e.getDefaultMessage())
 					.toList();
 
-			session.setAttribute("SAfeilmeldinger", feilmeldinger);
+			ra.addFlashAttribute("RAfeilmeldinger", feilmeldinger);
 			return "redirect:paamelding";
 		}
 		
 		
 		// Validerer passord
 		if(!InputValidator.isValidPassword(passord)) {
-			session.setAttribute("SAfeilmeldinger", "Passord er obligatorisk, og må ha en minimumslengde på 7.");
+			ra.addFlashAttribute("RAfeilmeldinger", "Passord er obligatorisk, og må ha en minimumslengde på 7.");
 			return "redirect:paamelding";
 		}
 		
 		if(!InputValidator.isValidPasswordRepeated(passord, passordRepetert)){
-			session.setAttribute("SAfeilmeldinger", "Repetert passord må være identisk med det første passordet.");
+			ra.addFlashAttribute("RAfeilmeldinger", "Repetert passord må være identisk med det første passordet.");
 			return "redirect:paamelding";
 		}
 		
 		// Validerer at det ikke allerede er registrert en deltager med det gitte telefonnummeret
 		if(deltagerRepo.existsByMobil(deltager.getMobil())) {
-			session.setAttribute("SAfeilmeldinger", "Det er allerede registrert en deltager med det gitte telefonnummeret.");
+			ra.addFlashAttribute("RAfeilmeldinger", "Det er allerede registrert en deltager med det gitte telefonnummeret.");
 			return "redirect:paamelding";
 		}
 		
 		
+		ra.addFlashAttribute("RAdeltager", deltager); // Lagrer atributter i session til kvitteringsview
+		
 		deltager.setSalt(passordService.genererTilfeldigSalt()); // Genererer og lagrer salt til hashing
 		deltager.setPassordhash(passordService.hashMedSalt(passord, deltager.getSalt())); // Hasher brukerens passord med salt
-		session.setAttribute("SAdeltager", deltager); // Lagrer atributter i session til kvitteringsview
+		
 		deltagerRepo.save(deltager); // Lagrer deltageren i databasen
 		LoginUtil.loggInnBruker(request, deltager.getMobil(), deltager.getPassordhash());// Logger inn brukeren
+		
+		
 		
 		return "redirect:kvittering";
 	} //end sjekkDeltager

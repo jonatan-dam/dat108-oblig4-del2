@@ -13,9 +13,9 @@
     <h2>Påmeldingsbekreftelse</h2>
     <p>Påmeldingen er mottatt for</p>
     <p>
-        ${SAdeltager.fornavn}<br />
-        ${SAdeltager.etternavn}<br />
-        ${SAdeltager.mobil}<br /> ${SAdeltager.kjonn}
+        ${RAdeltager.fornavn}<br />
+        ${RAdeltager.etternavn}<br />
+        ${RAdeltager.mobil}<br /> ${RAdeltager.kjonn}
     </p>
     <a href="deltagerliste">Gå til deltagerlisten</a>
 </body>
