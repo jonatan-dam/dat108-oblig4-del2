@@ -39,8 +39,15 @@ public class Deltager {
 	
 	
 	private String passordhash;
+	
+	public Deltager() {}
 
-
+	public Deltager(String mobil, String fornavn, String etternavn, String kjonn) {
+		this.mobil = mobil;
+		this.fornavn = fornavn;
+		this.etternavn = etternavn;
+		this.kjonn = kjonn;
+	}
 	
 	
 	public String getMobil() {
