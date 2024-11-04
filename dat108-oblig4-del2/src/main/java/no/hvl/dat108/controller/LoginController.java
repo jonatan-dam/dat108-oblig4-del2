@@ -1,3 +1,6 @@
+/**
+ * En controller-klasse for å håndtere innlogging
+ */
 package no.hvl.dat108.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,16 +28,29 @@ public class LoginController {
 	@Autowired
 	private DeltagerRepo deltagerRepo;
 	
+	/**
+	 * En GetMapping for å fremvise innloggingsskjema
+	 * @return innlogging.jsp et skjema for innlogging
+	 */
 	@GetMapping
 	public String hentLoginSkjema() {
 		return "innlogging";
-	}
+	} //End hentLoginSkjema
 	
+	
+	/**
+	 * En PostMapping som sjekker brukernavn og passord, og logger inn dersom gyldig.
+	 * @param mobil Mobilnummeret som brukes som brukernavn
+	 * @param passord Uhashet passord
+	 * @param request
+	 * @param ra
+	 * @return innlogging.jsp dersom ugyldig brukernavn/passord, deltagerliste.jsp dersom korrekt innlogging
+	 */
 	@PostMapping
 	public String provInnlogging(@RequestParam String mobil, @RequestParam String passord,
 			HttpServletRequest request, RedirectAttributes ra) {
 		
-		Deltager bruker = deltagerRepo.findByMobil(mobil);
+		Deltager bruker = deltagerRepo.findByMobil(mobil); // Henter frem bruker fra databasen til sammenligning
 		
 		
 		
@@ -48,5 +64,5 @@ public class LoginController {
 		LoginUtil.loggInnBruker(request, mobil, passord);
 		
 		return "redirect:deltagerliste";
-	}
+	} //end provInnlogging
 }

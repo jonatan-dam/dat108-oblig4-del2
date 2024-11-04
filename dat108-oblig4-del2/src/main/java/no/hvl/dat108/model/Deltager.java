@@ -1,3 +1,6 @@
+/**
+ * Objekt-klasse for deltagere
+ */
 package no.hvl.dat108.model;
 
 import jakarta.persistence.Entity;

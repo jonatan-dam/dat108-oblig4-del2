@@ -1,3 +1,7 @@
+/**
+ * En controller-klasse for utlogging av brukere
+ */
+
 package no.hvl.dat108.controller;
 
 import org.springframework.stereotype.Controller;
@@ -12,6 +16,12 @@ import no.hvl.dat108.util.LoginUtil;
 @RequestMapping("/loggut")
 public class LogoutController {
 
+	/**
+	 * En PostMapping som håndterer utlogging
+	 * @param session
+	 * @param ra
+	 * @return inlogging.jsp et view for å logge inn igjen
+	 */
 	@PostMapping
 	public String loggUtBruker(HttpSession session, RedirectAttributes ra) {
 		
@@ -20,6 +30,6 @@ public class LogoutController {
 		
 		
 		return "redirect:innlogging";
-	}
+	} //end loggUtBruker
 	
 }

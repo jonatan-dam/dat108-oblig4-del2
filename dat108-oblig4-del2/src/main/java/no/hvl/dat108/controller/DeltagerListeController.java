@@ -1,7 +1,8 @@
-package no.hvl.dat108.controller;
+/**
+ * En controller-klasse for fremvisning av deltagerlisten
+ */
 
-import java.util.Comparator;
-import java.util.List;
+package no.hvl.dat108.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -10,24 +11,20 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.servlet.http.HttpSession;
-import no.hvl.dat108.model.Deltager;
-import no.hvl.dat108.repository.DeltagerRepo;
 import no.hvl.dat108.service.DeltagerService;
-import no.hvl.dat108.service.PassordService;
 import no.hvl.dat108.util.LoginUtil;
 
 @Controller
 public class DeltagerListeController {
 	
 	@Autowired
-	private DeltagerRepo deltagerRepo;
-	
-	@Autowired
-	private PassordService passordService;
-	
-	@Autowired
 	private DeltagerService deltagerService;
 	
+	/**
+	 * En GetMapping for å fremvise en liste av deltagere. Krever at brukeren er innlogget.
+	 * Setter også attributtene fornavn og etternavn, slik at brukeren kan se hvem hen er logget inn som.
+	 * @return deltagerliste.jsp view for fremvisning av deltagere
+	 */
 	@GetMapping("/deltagerliste")
 	public String deltagerliste(Model model, HttpSession session, RedirectAttributes ra) {
 		
@@ -40,20 +37,11 @@ public class DeltagerListeController {
 		session.setAttribute("fornavn", deltagerService.finnVedMobil(mobil).getFornavn());
 		session.setAttribute("etternavn", deltagerService.finnVedMobil(mobil).getEtternavn());
 		
-		List<Deltager> alleDeltagere = deltagerService.finnAlle();
 		
-		// Legger inn sortering på fornavn først, etterfølgt av sortering på etternavn
-		Comparator<Deltager> comp = Comparator
-			.comparing(Deltager::getFornavn)
-			.thenComparing(Deltager::getEtternavn);
-				
-		List<Deltager> sortertDeltagere = alleDeltagere.stream()
-			.sorted(comp)
-			.toList();
-				
-		model.addAttribute("deltagere", sortertDeltagere);
+		// Henter en sortert liste over alle deltagere		
+		model.addAttribute("deltagere", deltagerService.sorterDeltagere());
 		
 		return "deltagerliste";
-	}
+	} //end deltagerliste
 
 }

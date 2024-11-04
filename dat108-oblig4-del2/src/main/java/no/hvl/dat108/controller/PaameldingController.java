@@ -1,3 +1,6 @@
+/**
+ * En controller-klasse for å håndtere påmelding av deltagere
+ */
 package no.hvl.dat108.controller;
 
 import java.util.List;
@@ -24,10 +27,14 @@ import no.hvl.dat108.util.LoginUtil;
 @Controller
 public class PaameldingController {
 	
+	/**
+	 * En custom binder som setter passord til å være untatt fra databinding
+	 * @param binder
+	 */
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		binder.setDisallowedFields("passord");
-	}
+	} //end initBinder
 
 	@Autowired
 	private DeltagerRepo deltagerRepo;
@@ -35,20 +42,37 @@ public class PaameldingController {
 	@Autowired
 	private PassordService passordService;
 	
+	
+	/**
+	 * En GetMapping som viser påmeldingsskjemaet
+	 * @return paamelding_med_melding.jsp view med skjema
+	 */
 	@GetMapping("/paamelding")
 	public String paamelding() {
 		return "paamelding_med_melding";
-	}
+	} //end paamelding
 	
 	
-	
-	
-	
+	/**
+	 * En GetMapping som viser kvittering etter vellykket påmelding. 
+	 * @return paameldt.jsp view med kvittering
+	 */
 	@GetMapping("/kvittering")
 	public String kvittering() {
 		return "paameldt";
-	}
+	} //end kvittering
 	
+	
+	/**
+	 * En PostMapping som håndterer noe validering av data, feilmeldinger, og lagring av deltagere
+	 * @param deltager Deltager som skal meldes på
+	 * @param bindingResult Resultat av databinding og validering
+	 * @param passord uhashet passort
+	 * @param passordRepetert 
+	 * @param session
+	 * @param request
+	 * @return paamelding.jsp dersom noen feil, kvittering.jsp dersom gyldig påmelding
+	 */
 	@PostMapping(value ="/sjekkDeltager")
 	public String sjekkDeltager(@Valid @ModelAttribute("deltager") Deltager deltager, BindingResult bindingResult, @RequestParam String passord,
 			@RequestParam String passordRepetert, HttpSession session, HttpServletRequest request) {
@@ -83,15 +107,14 @@ public class PaameldingController {
 		}
 		
 		
-		deltager.setSalt(passordService.genererTilfeldigSalt());
-		deltager.setPassordhash(passordService.hashMedSalt(passord, deltager.getSalt()));
-		
-		session.setAttribute("SAdeltager", deltager);
-		deltagerRepo.save(deltager);
-		LoginUtil.loggInnBruker(request, deltager.getMobil(), deltager.getPassordhash());
+		deltager.setSalt(passordService.genererTilfeldigSalt()); // Genererer og lagrer salt til hashing
+		deltager.setPassordhash(passordService.hashMedSalt(passord, deltager.getSalt())); // Hasher brukerens passord med salt
+		session.setAttribute("SAdeltager", deltager); // Lagrer atributter i session til kvitteringsview
+		deltagerRepo.save(deltager); // Lagrer deltageren i databasen
+		LoginUtil.loggInnBruker(request, deltager.getMobil(), deltager.getPassordhash());// Logger inn brukeren
 		
 		return "redirect:kvittering";
-	}
+	} //end sjekkDeltager
 	
 	
 }

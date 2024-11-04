@@ -1,3 +1,6 @@
+/**
+ * En hjelpeklasse for innlogging
+ */
 package no.hvl.dat108.util;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,9 +20,15 @@ public class LoginUtil {
 		if(session != null) {
 			session.invalidate();
 		}
-	}
+	} //end loggUtBruker
 	
 	
+	/**
+	 * En util for å logge inn brukeren. 
+	 * @param request
+	 * @param username
+	 * @param password
+	 */
 	public static void loggInnBruker(HttpServletRequest request, String username, String password) {
 		
 		loggUtBruker(request.getSession()); // Dersom bruker allerede er innlogget, logges bruker ut før hen logges inn igjen
@@ -30,16 +39,16 @@ public class LoginUtil {
 		
 		
 		sesjon.setMaxInactiveInterval(120); // Bruker logges ut etter 2 minutter med inaktivitet
-	}
+	} //end loggInnBruker
 	
 	
 	/**
 	 * En utility for å sjekke om brukeren er innlogget. Dersom bruker ikke har session eller brukernavn, så kan vi anta at de ikke er innlogget.
 	 * @param session
-	 * @return True dersom innlogget, false dersom ikke innlogget
+	 * @return boolean True dersom innlogget, false dersom ikke innlogget
 	 */
 	public static boolean erBrukerInnlogget(HttpSession session) {
 		return session != null && session.getAttribute("username") != null;
-	}
+	} //end erBrukerInnlogget
 
 }
