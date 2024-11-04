@@ -19,9 +19,6 @@ public class Deltager {
 	private String mobil;
 	
 	
-	
-	
-	
 	@Pattern(regexp="^[A-ZÆØÅ][a-zA-ZæøåÆØÅ\\- ]{2,19}$", message="Fornavn skal være 2-20 tegn og kan inneholde bokstaver (inkl. æøåÆØÅ), bindestrek "
 			+ "og mellomrom. Første tegn skal være en stor bokstav")
 	@NotNull(message="Fornavn er obligatorisk")
@@ -44,6 +41,14 @@ public class Deltager {
 	private String passordhash;
 
 
+	public Deltager(String mobil, String fornavn, String etternavn, String kjonn) {
+		this.mobil = mobil;
+		this.fornavn = fornavn;
+		this.etternavn = etternavn;
+		this.kjonn = kjonn;
+	}
+	
+	
 	public String getMobil() {
 		return mobil;
 	}
